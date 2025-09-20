@@ -33,13 +33,13 @@ This program is a system that manages bank account information for three people.
 - The `Date class` has such member functions: `checkDay(int)` and `print()`.
 - `checkDay(int day)` function is used to verify that if the  input day is correct, return the input day when correct, and throw an exception when incorrect. （static const array <int, monthsPerYear + 1> daysPerMonth = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }，In a leap year, February has 29 days.)
 - Leap year: Years that can be divided by 4 but not by 100, or years that can be divided by 400.
-```
-bool leap;
-if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))
-leap = true;
-else
-leap = false;
-```
+  ```
+  bool leap;
+  if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))
+  leap = true;
+  else
+  leap = false;
+  ```
 - `print()`function is used to output data in a form of `month/day/year`.e.g. `5/17/2002`   
 
 
