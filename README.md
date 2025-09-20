@@ -1,89 +1,115 @@
 # Week04 Quiz1:
 
-## 1. Problem:
+## 1. Requirements:
 
-이 프로그램은 3명의 은행 계좌 정보를 관리하는 시스템입니다.  
-각 계좌는 계좌 번호, 사용자 이름, 생년월일, 잔액 정보를 포함하고 있습니다.  
-3명의 계좌 정보가 배열에 저장되어 있으며, 이름, 입출금 선택, 입출금할 금액을 입력받아 작업을 수행하는 코드를 작성하세요.  
-출금 시 잔액이 부족할 경우 에러 처리 한 뒤, "not enough balance" 메시지를 출력하세요.  
-에러처리 후 출력하는 코드는 main에서 작성해주세요.
+This program is a system that manages bank account information for three people. Each account contains account number, username, date of birth, and balance information. The account information of three people is stored in the array, and write a code to perform the task by entering your name, deposit and withdrawal selection, and the amount to be deposited and withdrawn.
 
-계좌 정보 :  
+- Writing code using c++
+- Include `BankAccoun.h` and `Date.h` in your file. Use `BankAccount class` and `Date class` to write your code.
+- Changing the provided header file is not allowed. Write all function definitions and main function in the same `main.cpp` file.
+
+
+### Account Data:  
+```
 {1001, Kim, 3/7/2000, 5000}  
 {1002, Lee, 5/17/2002, 8000}  
-{1003, Park, 20/50/2008, 15000}  
+{1003, Park, 20/50/2008, 15000}
+```
 
-- **BankAccount 클래스**와 **Date 클래스**를 사용하여 코드를 작성하세요.
-- BankAccount(int 계좌번호, string 이름, int 월, int 일, int 년도, int 금액) 형태로 생성자를 작성하세요.
-- BankAccount 클래스는 입금 함수 deposit(int), 출금 함수 withdraw(int), 잔액 조회 Check(), 모든 계좌 정보 출력하는 printAll()를 멤버 함수를 가집니다.
-- Date 클래스 생성 중에 오류가 발생하면, **default 값인 1900년 1월 1일**을 대신 사용하세요.
-- 순회하지 않고, 1회만 진행
-- BankAccount.h, BankAccount.cpp, Date.h, Date.cpp, main.cpp 파일 만을 사용하여 코드를 작성하세요.  
+### BankAccount class:
+- The form of the constructor of `BankAccount class` should be `BankAccount(int id, string name, int month, int day, int year, int balance)`, and The constructor has a default form: `BankAccount(int = 0, string = "", int = 1, int = 1, int = 1900, int = 0)`.
+- The `BankAccount class` has such member functions: `deposit(int)`, `withdraw(int)` ,`check()` and `printAll()`.
+- `deposit(int)` function will add the value of its parameters to the balance.
+- `withdraw(int)` function will reduce the value of its parameters from the balance
+- `check()` will return the value of balance.
+- `printAll()` outputs all account information.
+- If the balance is insufficient when withdrawal, handle the error and print out the `"Error: Not enough balance"` message, and then output corresponding account information.
+
+### Date class
+- The form of the constructor of `Date class` should be `Date(int month, int day, int year)`, and The constructor has a default form: `Date(int = 1, int = 1, int = 1900)`.
+- When the constructor is called, output `"Date object constructor for date " along with the corresponding date`. e.g. `Date object constructor for date 3/7/2000`
+- When the destructor is called, output `"Date object destructor for date " along with the corresponding date`. e.g. `Date object destructor for date 3/7/2000`
+- If an error occurs while creating a Date class, output the error message and use the default value of `January 1, 1900`. ( When the day is less than 1 or exceeds the maximum number of days in the month, output `"Error: Invalid day for current month and year"`, When the month is less than 1 or more than 12, output `"Error: Month must be 1-12"` ).
+- The `BankAccount class` has such member functions: `checkDay(int)` and `print()`.
+- `checkDay(int day)` function is used to verify that if the  input day is correct, return the input day when correct, and throw an exception when incorrect. （static const array <int, monthsPerYear + 1> daysPerMonth = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }，In a leap year, February has 29 days.)
+- Leap year: Years that can be divided by 4 but not by 100, or years that can be divided by 400.
+```
+bool leap;
+if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))
+leap = true;
+else
+leap = false;
+```
+- `print()`function is used to output data in a form of `month/day/year`.e.g. `5/17/2002`   
+
 
 ### Input
-사용자로부터 입금 또는 출금을 수행할 계좌의 이름과 입출금 금액을 입력받습니다.  
-
-1. 사용자 이름  
-2. 입금/출금 선택 (1: 입금, 2: 출금)  
-3. 입출금할 금액  
+- The first line contains a number (int type) representing the number of accounts that are about to be entered.
+- Starting from the second line, input the corresponding number of query commands based on the numbers entered in the first line. Format as `Name(string/char[] Type) orderWord(int Type) money(int Type)`, separated by spaces. Each command is followed by a new line until all inputs are complete. Order word `1` for deposit and `2` for withdraw. e.g. `Kim 1 5000`. 
 
 ### Output  
 
-3명의 현재 생일 정보와 계좌 정보가 출력되게 한 다음   
-입출금 작업 후의 계좌 정보를 출력합니다.  
+- The first three lines output the date data generation information corresponding to the three users' accounts.
+- Afterwards, output the processed account information based on the previously entered instructions. When an error occurs, output error handling information.
+- The last three lines output the corresponding date data deletion information when the data is deleted.
 
-출금 시 잔액이 부족하면 "not enough balance" 오류 메시지를 출력하고,  
-다음 줄에 해당 계좌 정보를 출력하세요. (Example 2 참고)
+### Error handling
 
-  
-### 1.1 Example 1:  
+- When the day is less than 1 or exceeds the maximum number of days in the month, output `"Error: Invalid day for current month and year"`.
+- When the month is less than 1 or more than 12, output `"Error: Month must be 1-12"`.
+- When the input name is not in the list, output `"Error: No such people."`.
+- When the order word is not 1 or 2, output `"Error: Invalid keyword". message, and then output corresponding account information`.
+- If the balance is insufficient when withdrawal, handle the error and print out the `"Error: Not enough balance" message, and then output corresponding account information`.
 
-**Input:**  
+### Other tips
+- When reading part of the input through `cin` and wanting to skip the subsequent part, the cache can be cleared using `cin.ignore(std::numeric_limits< streamsize >::max(), '\n');`.
 
-```
-Lee
-1
-3000
-```
+<br/>
 
-**Output:**  
-```
-Date object constructor for date 3/7/2000
-Date object constructor for date 5/17/2002
-Date object constructor for date 1/1/1900
-1001, Kim, 3/7/2000, 5000
-1002, Lee, 5/17/2002, 8000
-1003, Park, 1/1/1900, 15000
-1002, Lee, 5/17/2002, 11000
-Date object destructor for date 1/1/1900
-Date object destructor for date 5/17/2002
-Date object destructor for date 3/7/2000
-```
+## 2. Scoring Criteria (Total 5 points):
 
-### 1.2 Example 2:  
+- No compilation error: 1 point
+- Output is correct: 2 point
+- Exception handling: 2 point
+
+<br/>
+
+## 3 Example(Red font for input, blue font for output):
+![image](https://github.com/chyh001228/images/blob/main/w4q1.png)
 
 **Input:**
 
 ```
-Lee
-2
-10000
+5
+Kim 1 5000
+Lee 2 500
+Park 2 20000
+Lee 3 1000
+Boob 1 10000
 ```
 
 **Output:**
+
 ```
 Date object constructor for date 3/7/2000
 Date object constructor for date 5/17/2002
+Error: Month must be 1-12
+Error: Invalid day for current month and year
 Date object constructor for date 1/1/1900
-1001, Kim, 3/7/2000, 5000
-1002, Lee, 5/17/2002, 8000
+1001, Kim, 3/7/2000, 10000
+1002, Lee, 5/17/2002, 7500
+Error: Not enough balance
 1003, Park, 1/1/1900, 15000
-not enough balance
-1002, Lee, 5/17/2002, 8000
+Error: Invalid keyword
+1002, Lee, 5/17/2002, 7500
+Error: No such people.
 Date object destructor for date 1/1/1900
 Date object destructor for date 5/17/2002
 Date object destructor for date 3/7/2000
 ```
+
+**Actual results:**  
+![image](https://github.com/chyh001228/images/blob/main/w4q1_c.png)
 
 None.
 
