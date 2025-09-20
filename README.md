@@ -30,7 +30,7 @@ This program is a system that manages bank account information for three people.
 - When the constructor is called, output `"Date object constructor for date " along with the corresponding date`. e.g. `Date object constructor for date 3/7/2000`
 - When the destructor is called, output `"Date object destructor for date " along with the corresponding date`. e.g. `Date object destructor for date 3/7/2000`
 - If an error occurs while creating a Date class, output the error message and use the default value of `January 1, 1900`. ( When the day is less than 1 or exceeds the maximum number of days in the month, output `"Error: Invalid day for current month and year"`, When the month is less than 1 or more than 12, output `"Error: Month must be 1-12"` ).
-- The `BankAccount class` has such member functions: `checkDay(int)` and `print()`.
+- The `Date class` has such member functions: `checkDay(int)` and `print()`.
 - `checkDay(int day)` function is used to verify that if the  input day is correct, return the input day when correct, and throw an exception when incorrect. （static const array <int, monthsPerYear + 1> daysPerMonth = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }，In a leap year, February has 29 days.)
 - Leap year: Years that can be divided by 4 but not by 100, or years that can be divided by 400.
 ```
