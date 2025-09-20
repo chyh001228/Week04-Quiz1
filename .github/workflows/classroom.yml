@@ -1,0 +1,87 @@
+name: Autograding Tests
+on:
+  push:
+  repository_dispatch:
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: windows-latest  # GitHub-hosted Windows runner 사용
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+      # 학생의 리포지토리 코드 체크아웃
+      - name: Checkout student code
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.repository.full_name }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      # Grading Scripts 리포지토리 체크아웃
+      - name: Checkout grading scripts
+        uses: actions/checkout@v4
+        with:
+          repository: inha-leeyeon/grading_code  # Grading Scripts 리포지토리 경로로 변경
+          path: grading-scripts
+          token: ${{ secrets.GRADING_SCRIPTS_TOKEN }}
+
+      # Python 설정
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'  # 필요한 Python 버전으로 설정
+
+      # check1 실행
+      - name: check1
+        id: check1
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: check1
+          setup-command: g++ -Werror=larger-than=131072 grading-scripts\answer\week04\quiz1\class_main_1.cpp -I . Date.cpp
+          command: python grading-scripts\code_test.py grading-scripts\answer\week04\quiz1\class_output_1.txt
+          max-score: 1
+          
+      # check2 실행
+      - name: check2
+        id: check2
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: check2
+          setup-command: g++ -Werror=larger-than=131072 grading-scripts\answer\week04\quiz1\class_main_2.cpp -I . Date.cpp BankAccount.cpp
+          command: python grading-scripts\code_test.py grading-scripts\answer\week04\quiz1\class_output_2.txt
+          timeout: 1
+          max-score: 1
+
+      # test1 실행
+      - name: test1
+        id: test1
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: test1
+          setup-command: g++ -Werror=larger-than=131072 main.cpp Date.cpp BankAccount.cpp
+          command: python grading-scripts\code_test.py grading-scripts\answer\week04\quiz1\output1.txt --input_path=grading-scripts\answer\week04\quiz1\input1.txt
+          timeout: 1
+          max-score: 1
+          
+      # test2 실행
+      - name: test2
+        id: test2
+        uses: classroom-resources/autograding-command-grader@v1
+        with:
+          test-name: test2
+          setup-command: g++ -Werror=larger-than=131072 main.cpp Date.cpp BankAccount.cpp
+          command: python grading-scripts\code_test.py grading-scripts\answer\week04\quiz1\output2.txt --input_path=grading-scripts\answer\week04\quiz1\input2.txt
+          timeout: 1
+          max-score: 1
+          
+      # Autograding Reporter 실행
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          CHECK1_RESULTS: "${{steps.check1.outputs.result}}"
+          CHECK2_RESULTS: "${{steps.check2.outputs.result}}"
+          TEST1_RESULTS: "${{steps.test1.outputs.result}}"
+          TEST2_RESULTS: "${{steps.test2.outputs.result}}"
+        with:
+          runners: check1, check2, test1, test2
